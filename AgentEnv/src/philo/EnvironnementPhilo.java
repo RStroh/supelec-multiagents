@@ -1,6 +1,8 @@
 package philo;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Set;
 
 import plateforme.ActionType;
 import plateforme.Agent;
@@ -74,9 +76,12 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	@Override
-	public Perception<? extends Agent, ?>[] getPerceptions() {
-		return null;
-//		return EnumSet.allOf(Perception.class).;
+	public Set<Perception<A extends Agent, ?>> getPerceptions(Class<A> klass) {
+
+		for (Perception<Agent, T> iterable_element : iterable) {
+			
+		}
+		return EnumSet.allOf(Perceptions.class);
 	}
 
 	public void ajouterPhilosophe(Philosophe philosophe) {

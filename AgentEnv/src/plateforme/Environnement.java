@@ -13,6 +13,6 @@ public abstract class Environnement {
 	public abstract <A extends Agent, T> T getPerception(A agent, Perception<A,T> p);
 	
 	public abstract boolean doAction(ActionContainer a);
-	public abstract <A extends Agent, T> T doAction(A agent, Action<A, T> a);
+	public abstract <A extends Agent, T> T doAction(A agent, Action<A, T> a) throws UndefinedActionException;
 	
 }

@@ -1,13 +1,15 @@
 package plateforme;
 
-public abstract class Agent extends Thread{
+public abstract class Agent<E extends Environnement> extends Thread{
 
-	public Agent(Environnement env) {
+	protected E env;
+
+	private EtatType<Agent<E>> etat;
+	
+	public Agent(E env) {
 		this.setEnv(env);
 		this.etat = etatInitial();
 	}
-	
-	protected EtatType etat;
 	
 	public abstract EtatType etatInitial();
 	
@@ -23,7 +25,20 @@ public abstract class Agent extends Thread{
 		return (T) getEnv().getPerception(this, (Perception<Agent, T>) p.getPerception());
 	}
 	
-	public abstract Environnement getEnv();
-	public abstract void setEnv(Environnement env);
-
+	public <T> T act(ActionContainer ac) {
+		try {
+			if (ac.getAction() == null) throw new UndefinedActionException(String.format("L'action %s n'est pas implémentée.", ac));
+			return (T) getEnv().doAction(this, (Action<Agent, T>) ac.getAction());
+		} catch (UndefinedActionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public E getEnv() {
+		return env;
+	}	
+	
+	public void setEnv(E env) {
+		this.env = env;
+	}
 }

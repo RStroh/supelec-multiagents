@@ -1,5 +1,5 @@
 package plateforme;
 
-public interface EtatType {
+public interface EtatType<A extends Agent<?>> {
 	
 }

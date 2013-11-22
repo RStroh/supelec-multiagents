@@ -13,6 +13,5 @@ package plateforme;
 public interface ActionContainer {
 
 	public <T> Action<? extends Agent,T> getAction();
-
 	
 }

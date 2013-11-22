@@ -10,14 +10,25 @@ import plateforme.Action;
 import plateforme.ActionContainer;
 import plateforme.Agent;
 import plateforme.Environnement;
+import plateforme.EtatType;
 import plateforme.Perception;
 import plateforme.PerceptionContainer;
+import plateforme.UndefinedActionException;
 
 public class EnvironnementPhilo extends Environnement {
 
 	private List<Philosophe> philosophes = new ArrayList<Philosophe>();
 	private List<Fourchette> fourchettes = new ArrayList<Fourchette>();
+	
+	private Agent<EnvironnementPhilo> scribe = new Agent<EnvironnementPhilo>(this) {
 
+		@Override
+		public EtatType etatInitial() {
+			return null;
+		}
+		
+	};
+	
 	private int penseeProduite;
 	
 	enum PerceptionsPhilosophes implements PerceptionContainer{
@@ -66,7 +77,7 @@ public class EnvironnementPhilo extends Environnement {
 	}
 	public enum ActionsPhilosophes implements ActionContainer{
 		MANGER(null),
-		PRODUIRE_PENSEE(new Action<Philosophe, Void>(){
+		PENSER(new Action<Philosophe, Void>(){
 			
 			@Override
 			public Void doAction(Philosophe p) {
@@ -149,7 +160,7 @@ public class EnvironnementPhilo extends Environnement {
 	}
 	
 	@Override
-	public <A extends Agent, T> T doAction(A agent, Action<A, T> a) {
+	public <A extends Agent, T> T doAction(A agent, Action<A, T> a) throws UndefinedActionException {
 		return a.doAction(agent);
 	}
 

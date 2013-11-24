@@ -41,4 +41,21 @@ public abstract class Agent<E extends Environnement> extends Thread{
 	public void setEnv(E env) {
 		this.env = env;
 	}
+	
+	@Override
+	public final void run() {
+		while(true){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			StringBuilder out = new StringBuilder();
+			out.append(percevoir());
+			out.append(decider());
+			System.out.println(out);
+		}
+	}
+
+	public abstract String percevoir();
+	public abstract String decider();
 }

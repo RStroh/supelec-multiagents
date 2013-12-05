@@ -1,4 +1,6 @@
-package plateforme;
+package plateforme.perception;
+
+import plateforme.Agent;
 
 /**
  * 

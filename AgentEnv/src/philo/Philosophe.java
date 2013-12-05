@@ -1,16 +1,23 @@
 package philo;
 
-import static philo.EnvironnementPhilo.ActionsPhilosophes.*;
-import static philo.EnvironnementPhilo.PerceptionsPhilosophes.*;
-import static philo.EtatPhilosophe.*;
+import static com.codahale.metrics.MetricRegistry.*;
+import static philo.ActionsPhilosophes.*;
+import static philo.EtatsPhilosophe.*;
+import static philo.PerceptionsPhilosophes.*;
 import plateforme.Agent;
-import plateforme.EtatType;
+import plateforme.Etat;
+import plateforme.action.WrongActionException;
+import plateforme.interaction.AMS;
+
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Meter;
 
 public class Philosophe extends Agent<EnvironnementPhilo>{
 
 	static int SEUIL_FAIM_INF = -3;
 	static int SEUIL_FAIM_SUP = 3;
 	
+
 	public Philosophe(EnvironnementPhilo env, String nom) {
 		super(env);
 		this.nom = nom;
@@ -18,56 +25,70 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 
 	private String nom;
 	private int faim = 0;
-	private EtatPhilosophe etat = PENSE;
+	private EtatsPhilosophe etat = PENSE;
+
+	final Counter faimCounter = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
+	final Meter penseeProduiteRate = Main.metricsRegistry.meter(name(this.getClass(), nom, "pensee"));
 	
 	public String percevoir() {
-			StringBuilder out = new StringBuilder();
-			
-			//Perception
-			out.append(String.format("Position %s : %s", this, 
-					percept(POSITION)));
+		StringBuilder out = new StringBuilder();
 
-			return out.toString();
+		//Perception
+		out.append(String.format("Position %s : %s", this, 
+				percept(POSITION)));
+
+		return out.toString();
 	}
-	
+
 	@Override
 	public String decider() {
 		StringBuilder out = new StringBuilder();
 		//Decision-->Action
 		out.append(" // etat:" + etat);
-		
+
 		switch (etat) {
 		case PENSE:
-			out.append(" // ");
-			out.append((aFaim()) ? "J'ai faim" : "J'ai pas faim.");
-			if (aFaim()) {
-				//Tenter de manger, en cas d'échec, ATTENDRE.
-				if (tryManger()) break;
-				else etat = ATTEND;
-			}
-			else {
+			
+			try {
 				act(PENSER);
 				faim++;
+			} catch (WrongActionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			out.append(" // ");
+			out.append((aFaim()) ? "J'ai faim" : "J'ai pas faim.");
+			if (aFaim()) etat = MANGE;
 			break;
 
 		case ATTEND:
 			
-			if (percept(A_FOURCHETTE_G)) {
-				if (percept(A_FOURCHETTE_D)) etat = MANGE;
+			try {
+				tryManger();
+			} catch (WrongActionException e1) {
 			}
-			
 			break;
-			
+
 		case MANGE:
 			faim--;
-			if (faim < SEUIL_FAIM_INF) etat = PENSE;
+			if (!aFaim()) {
+				//poser les fourchettes.
+				try {
+					if (percept(A_FOURCHETTE_D))	act(POSER_FOURCHETTE_D);
+					if (percept(A_FOURCHETTE_G))	act(POSER_FOURCHETTE_G);
+				} catch (WrongActionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				etat = PENSE;
+			}
 			break;
 
 		default:
 			break;
 		}
-		
+
 		return out.toString();
 	}
 
@@ -75,15 +96,15 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 		return faim > SEUIL_FAIM_SUP;
 	}
 
-	private boolean tryManger(){
-		//Si j'ai pas les 2 fourchettes, je repose les 2.
+	private void tryManger() throws WrongActionException {
+		//Si j'ai pas les 2 fourchettes, je prends les 2.
 		act(PRENDRE_LES_2_FOURCHETTES);
-		
+
 		if (percept(A_FOURCHETTE_G)) {
-			if (percept(A_FOURCHETTE_D)) etat = MANGE;
-			act(MANGER);
+			if (percept(A_FOURCHETTE_D)){
+				etat = MANGE;
+			}
 		}
-		return false;
 	}
 
 	//Demande sa position à l'environnement.
@@ -92,9 +113,28 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 	}
 
 	@Override
-	public EtatType etatInitial() {
-		return EtatPhilosophe.PENSE;
+	public Etat<Philosophe> etatInitial() {
+		return EtatsPhilosophe.PENSE;
 	}
 
+	@Override
+	public String toString() {
+		return nom;
+	}
+	
+//	public void incrFaim(int i){
+//		faim = faim -i;
+//		faimCounter.dec(i);
+//	}
+//	
+//	public void decrFaim(int i){
+//		faim = faim-i;
+//		faimCounter.inc(i);
+//	}
 
+	@Override
+	public AMS getAMS() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

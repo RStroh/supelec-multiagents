@@ -1,4 +1,4 @@
-package plateforme;
+package plateforme.action;
 
 public class UndefinedActionException extends Exception {
 	/**

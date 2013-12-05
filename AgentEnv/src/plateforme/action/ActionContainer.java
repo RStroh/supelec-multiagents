@@ -1,4 +1,6 @@
-package plateforme;
+package plateforme.action;
+
+import plateforme.Agent;
 
 /**
  * @author thomas
@@ -10,8 +12,8 @@ package plateforme;
  *	dans une énumération Actions de l'environnement.
  *
  */
-public interface ActionContainer {
+public interface ActionContainer<A extends Agent> {
 
-	public <T> Action<? extends Agent,T> getAction();
+	public <T> Action<A,T> getAction();
 	
 }

@@ -1,37 +1,54 @@
 package philo;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import philo.Fourchette.EtatFourchette;
-import plateforme.Action;
-import plateforme.ActionContainer;
 import plateforme.Agent;
+import plateforme.AgentType;
 import plateforme.Environnement;
-import plateforme.EtatType;
-import plateforme.Perception;
-import plateforme.PerceptionContainer;
-import plateforme.UndefinedActionException;
+import plateforme.Etat;
+import plateforme.action.Action;
+import plateforme.action.ActionContainer;
+import plateforme.action.UndefinedActionException;
+import plateforme.action.WrongActionException;
+import plateforme.interaction.AMS;
+import plateforme.perception.Perception;
 
 public class EnvironnementPhilo extends Environnement {
 
-	private List<Philosophe> philosophes = new ArrayList<Philosophe>();
+//	private List<Philosophe> philosophes = new ArrayList<Philosophe>();
+	public enum AgentTypes implements AgentType{
+		PHILOSOPHE(Philosophe.class);
+
+		private Class<? extends Agent> agentDescriptionClass;
+		
+		AgentTypes(Class<? extends Agent> agentDescriptionClass){
+			this.agentDescriptionClass = agentDescriptionClass;
+		}
+		
+		@Override
+		public Class<? extends Agent> getAgentDescriptionClass() {
+			return agentDescriptionClass;
+		}
+		
+	}
+	
 	private List<Fourchette> fourchettes = new ArrayList<Fourchette>();
 
 	private Agent<EnvironnementPhilo> scribe = new Agent<EnvironnementPhilo>(this) {
 
 		@Override
-		public EtatType etatInitial() {
+		public Etat<Philosophe> etatInitial() {
 			return null;
-			
 		}
 
 		@Override
 		public String percevoir() {
 			// TODO Auto-generated method stub
-			return null;
+			return "Scribe: ";
 		}
 
 		@Override
@@ -39,96 +56,19 @@ public class EnvironnementPhilo extends Environnement {
 			return "Pensée Produite : "+getPenseeProduite();
 		}
 
+		@Override
+		public AMS getAMS() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	};
 
 	private int penseeProduite;
-
-	public enum PerceptionsPhilosophes implements PerceptionContainer{
-		POSITION(new Perception<Philosophe,Integer>(){
-			
-			@Override
-			public Integer getValue(Philosophe p) {
-				return p.getEnv().getPosition(p);
-				
-			}
-			
-		}),
-		A_FOURCHETTE_G(	new Perception<Philosophe,Boolean>() {
-			
-			@Override
-			public Boolean getValue(Philosophe p) {
-				return p == p.getEnv().fourchetteGauche(p).getPossesseur();
-			}
-			
-		}),
-		A_FOURCHETTE_D(new Perception<Philosophe,Boolean>() {
-			
-			@Override
-			public Boolean getValue(Philosophe p) {
-				return p == p.getEnv().fourchetteDroite(p).getPossesseur();
-			}
-			
-		}),
-		ETAT_FOURCHETTE_D(new Perception<Philosophe, EtatFourchette>(){
-
-			@Override
-			public EtatFourchette getValue(Philosophe p) {
-				return null;
-			}
-		});
-
-		private Perception<Philosophe,?> perception;
-		private <T> PerceptionsPhilosophes(Perception<Philosophe,T> p) {
-			this.perception = p;
-		}
-
-		@Override
-		public <T> Perception<Philosophe,T> getPerception(){
-			return (Perception<Philosophe,T>) perception;
-		}
-	}
 	
-	
-	public enum ActionsPhilosophes implements ActionContainer{
-		MANGER(null),
-		PENSER(new Action<Philosophe, Void>(){
-
-			@Override
-			public Void doAction(Philosophe p) {
-				p.getEnv().produirePensee(p);
-				return null;
-			}
-
-		}),
-		PRENDRE_LES_2_FOURCHETTES(new Action<Philosophe, Boolean>(){
-
-			@Override
-			synchronized public Boolean doAction(Philosophe p) {
-				if (p.getEnv().fourchetteDroite(p).estLibre() //TODO ou possedée par moi
-						&& p.getEnv().fourchetteGauche(p).estLibre()){
-					p.getEnv().fourchetteDroite(p).setPossesseur(p);
-					p.getEnv().fourchetteGauche(p).setPossesseur(p);
-				}
-				
-				return new Boolean(true);
-			}
-		}),
-		POSER_FOURCHETTE_G(null),
-		POSER_FOURCHETTE_D(null),
-		PRENDRE_FOURCHETTE_G(null),
-		PRENDRE_FOURCHETTE_D(null);
-
-		private Action<Philosophe, ?> action;
-
-		private <T> ActionsPhilosophes(Action<Philosophe, T> a) {
-			this.action = a;
-		}
-
-		@Override
-		public <T> Action<Philosophe, T> getAction() {
-			return (Action<Philosophe, T>) action;
-		}
-	}
+	public EnvironnementPhilo() {
+		scribe.start();
+	}	
 
 	@Override
 	public boolean doAction(ActionContainer a) {
@@ -164,17 +104,17 @@ public class EnvironnementPhilo extends Environnement {
 	public Philosophe ajouterPhilosophe(String nom) {
 		//TODO Ajouter le philosophe et les fourchettes.
 		Philosophe p = new Philosophe(this, nom);
-		if (philosophes.isEmpty()) {
+		if (getAgents(AgentTypes.PHILOSOPHE).isEmpty()) {
 			//On ajoute la fourchette zero si jamais on n'a pas encore mis de philosophe.
 			fourchettes.add(new Fourchette());
 		}
-		philosophes.add(p);
+		addAgent(p);
 		fourchettes.add(new Fourchette());
 		return p;
 	}
 
 	public int getPosition(Philosophe p) {
-		return philosophes.indexOf(p);
+		return getAgents(AgentTypes.PHILOSOPHE).indexOf(p);
 	}
 
 	public Fourchette fourchetteGauche(Philosophe p){
@@ -182,7 +122,7 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	public Fourchette fourchetteDroite(Philosophe p){
-		return fourchettes.get((getPosition(p) + 1) % philosophes.size());
+		return fourchettes.get((getPosition(p) + 1) % getAgents(AgentTypes.PHILOSOPHE).size());
 	}
 
 	@Override
@@ -191,8 +131,12 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	@Override
-	public <A extends Agent, T> T doAction(A agent, Action<A, T> a) throws UndefinedActionException {
+	public <A extends Agent, T> T doAction(A agent, Action<A, T> a) throws UndefinedActionException, WrongActionException {
 		return a.doAction(agent);
 	}
-
+	
+	@Override
+	public List<AgentType> getAgentTypes() {
+		return new ArrayList<AgentType>(Arrays.asList(AgentTypes.values()));
+	}
 }

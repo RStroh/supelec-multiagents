@@ -11,6 +11,10 @@ public class Fourchette {
 		return (possesseur == null);
 	}
 	
+	public void poser() {
+		this.setPossesseur(null);
+	}
+	
 	public void setPossesseur(Philosophe p) {
 		possesseur = p;
 	}

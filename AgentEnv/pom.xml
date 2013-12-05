@@ -22,5 +22,18 @@
   		<artifactId>google-collections</artifactId>
   		<version>1.0</version>
   	</dependency>
+    <dependency>
+        <groupId>com.codahale.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${metrics.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.codahale.metrics</groupId>
+        <artifactId>metrics-graphite</artifactId>
+        <version>${metrics.version}</version>
+    </dependency>
   </dependencies>
+  <properties>
+  	<metrics.version>3.0.1</metrics.version>
+  </properties>
 </project>

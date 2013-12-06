@@ -56,19 +56,23 @@ public abstract class Agent<E extends Environnement,
 	 */
 	public abstract List<Action> getActions();
 
-
+	
+	
 	@Override
 	public final void run() {
 		while(true){
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
+				
 			}
 
 			//TODO Process messages if mailbox not empty
 			List<Message> courrierReleve = mailbox.relever();
 			for (Message message : courrierReleve) {
 				//TODO Process message.
+				//Recupérer la pile de courrier.
+				
 				System.out.println("Courrier");
 			}
 

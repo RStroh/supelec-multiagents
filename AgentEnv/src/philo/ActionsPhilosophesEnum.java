@@ -16,17 +16,16 @@ public enum ActionsPhilosophesEnum implements ActionContainer<Philosophe>{
 	}),
 	PENSER(
 	/**
-	 * 
+	 * DoAction Renvoie le surplus de pensee produite par ce philosophe.
 	 * 
 	 * @author thomas
 	 *
 	 */
-	new Action<Philosophe, Integer>(){
+	new Action<Philosophe, Long>(){
 
 		@Override
-		public Integer doAction(Philosophe p) {
-			p.getEnv().produirePensee(p);
-			return null;
+		public Long doAction(Philosophe p) {
+			return (long) p.getEnv().produirePensee(p);
 		}
 
 	}),

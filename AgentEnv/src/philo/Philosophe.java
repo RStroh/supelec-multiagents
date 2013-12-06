@@ -14,6 +14,7 @@ import plateforme.action.ActionContainer;
 import plateforme.action.WrongActionException;
 import plateforme.agent.Agent;
 import plateforme.agent.Etat;
+import plateforme.interaction.Message;
 import plateforme.perception.PerceptionEnum;
 
 import com.codahale.metrics.Counter;
@@ -56,6 +57,7 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 		case PENSE:
 
 			try {
+				//On ajoute la pensée produite par le philosophe aux stats.
 				penseeProduiteRate.mark((long) act(PENSER));
 				faim.inc();
 			} catch (WrongActionException e) {
@@ -64,13 +66,13 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 			}
 			out.append((aFaim()) ? " // J'ai faim" : " // J'ai pas faim.");
 			if (aFaim()){
-				try {
-					if (fourchettesLibres()) manger();
-					else setAgentState(ATTEND);
-				} catch (WrongActionException e2) {
-					out.append("// Quelqu'un a pris la fourchette plus vite que moi !");
+//				try {
+//					if (fourchettesLibres()) manger();
+//					else setAgentState(ATTEND);
+//				} catch (WrongActionException e2) {
+//					out.append("// Quelqu'un a pris la fourchette plus vite que moi !");
 					setAgentState(ATTEND);
-				}
+//				}
 			}
 			break;
 
@@ -79,10 +81,12 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 				try {
 					manger();
 				} catch (WrongActionException e1) {
-
+					
 				}
 			} else if (creveDeFaim()) {
-				
+//				percept(p)
+//				
+//				send(new Message(this, destinataire, performatif, contenu));
 			}
 			break;
 
@@ -91,8 +95,8 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 			if (estRassasie()) {
 				//poser les fourchettes.
 				try {
-					if (percept(A_FOURCHETTE_D))	act(POSER_FOURCHETTE_D);
-					if (percept(A_FOURCHETTE_G))	act(POSER_FOURCHETTE_G);
+					act(POSER_FOURCHETTE_D);
+					act(POSER_FOURCHETTE_G);
 				} catch (WrongActionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

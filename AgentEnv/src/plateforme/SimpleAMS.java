@@ -22,7 +22,7 @@ public class SimpleAMS implements AMS {
 	
 	@Override
 	public void send(Message m) throws SendMessageException {
-		
+		m.getDestinataire().getMailbox().deposer(m);
 	}
 	@Override
 	public void addAgent(Agent a) {

@@ -12,12 +12,13 @@ import plateforme.agent.Agent;
 import plateforme.agent.AgentAware;
 import plateforme.agent.AgentTypeContainer;
 import plateforme.interaction.Message;
+import plateforme.interaction.PerformatifContainer;
 import plateforme.interaction.SendMessageAble;
 import plateforme.interaction.SendMessageException;
 import plateforme.perception.Perception;
 
 
-public abstract class Environnement<AgentTypes extends Enum<? extends AgentTypeContainer>> implements SendMessageAble, AgentAware {
+public abstract class Environnement<AgentTypes extends Enum<? extends AgentTypeContainer>, PerformativeTypes extends Enum<? extends PerformatifContainer>> implements SendMessageAble, AgentAware {
 	
 	/**
 	 * Agent Management Service.

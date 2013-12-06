@@ -11,7 +11,7 @@ public class SimpleMailbox<A extends Agent> implements Mailbox<A>{
 	PriorityBlockingQueue<Message> messages = new PriorityBlockingQueue<Message>();
 	
 	@Override
-	public void deposer(Message m) {
+	public void deposer(Message m) throws SendMessageException {
 		//TODO Vérifier que le message est adapté à ce type d'agent.
 		messages.add(m);
 	}

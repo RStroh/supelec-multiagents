@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import plateforme.AMS;
+import plateforme.DefaultPerformatifs;
 import plateforme.Environnement;
 import plateforme.NoPerceptions;
 import plateforme.action.Action;
@@ -21,7 +22,7 @@ import plateforme.agent.NoStates;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionEnum;
 
-public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
+public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPerformatifs> {
 
 	/**
 	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
@@ -79,7 +80,9 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
 	}
 
 	protected int produirePensee(Philosophe p) {
-		return ++penseeProduite;
+		int incr = 1;
+		penseeProduite = penseeProduite + incr;
+		return incr;
 	}
 
 	public Philosophe ajouterPhilosophe(String nom) {

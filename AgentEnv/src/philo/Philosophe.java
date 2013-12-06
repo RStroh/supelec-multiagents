@@ -1,7 +1,7 @@
 package philo;
 
 import static com.codahale.metrics.MetricRegistry.*;
-import static philo.ActionsPhilosophes.*;
+import static philo.ActionsPhilosophesEnum.*;
 import static philo.EtatsPhilosophe.*;
 import static philo.PerceptionsPhilosophes.*;
 
@@ -19,7 +19,7 @@ import plateforme.perception.PerceptionEnum;
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
 
-public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, PerceptionsPhilosophes, ActionsPhilosophes>{
+public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, PerceptionsPhilosophes, ActionsPhilosophesEnum>{
 
 	static int SEUIL_FAIM_INF = -3;
 	static int SEUIL_FAIM_SUP = 3;
@@ -152,13 +152,13 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 
 	@Override
 	protected Class<? extends ActionContainer> actionContainerClass() {
-		return ActionsPhilosophes.class;
+		return ActionsPhilosophesEnum.class;
 	}
 
 	@Override
 	public List<Action> getActions() {
 		List<Action> actions = new ArrayList<>();
-		for (ActionContainer ac : ActionsPhilosophes.values()) {
+		for (ActionContainer ac : ActionsPhilosophesEnum.values()) {
 			actions.add(ac.getAction());
 		}
 		return actions;

@@ -103,7 +103,7 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
 
 	//	@Override
 	//	public ActionContainer[] getActions() {
-	//		return ActionsPhilosophes.values();
+	//		return ActionsPhilosophesEnum.values();
 	//	}
 	//
 	//	@Override

@@ -4,7 +4,7 @@ import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.WrongActionException;
 
-public enum ActionsPhilosophes implements ActionContainer<Philosophe>{
+public enum ActionsPhilosophesEnum implements ActionContainer<Philosophe>{
 	MANGER(new Action<Philosophe, Void>(){
 
 		@Override
@@ -87,7 +87,7 @@ public enum ActionsPhilosophes implements ActionContainer<Philosophe>{
 
 	private Action<Philosophe, ?> action;
 
-	private <T> ActionsPhilosophes(Action<Philosophe, T> a) {
+	private <T> ActionsPhilosophesEnum(Action<Philosophe, T> a) {
 		this.action = a;
 	}
 

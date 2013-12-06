@@ -28,7 +28,7 @@ public abstract class Agent<E extends Environnement,
 		StateEnumType extends Enum<? extends Etat<? extends Agent>>,
 		PerceptionEnumType extends Enum<? extends PerceptionEnum>,
 		ActionsEnumType extends Enum<? extends ActionContainer<? extends Agent>>> extends Thread implements AgentI{
-	//<? extends Perception<? extends Agent<E, ?, ?>, ?>>
+
 	protected E env;
 	protected Mailbox<Agent<E,?,?,?>> mailbox = new SimpleMailbox<>();
 	private Class<? extends PerceptionEnum> perceptionContainer;

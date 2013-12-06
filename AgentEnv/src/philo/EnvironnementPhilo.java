@@ -21,25 +21,25 @@ import plateforme.action.WrongActionException;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionEnum;
 
-public class EnvironnementPhilo extends Environnement {
+public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
 
-	public enum AgentTypes  implements AgentTypeContainer{
-		PHILOSOPHE(Philosophe.class);
-		//...
-		//Ajouter des nouveaux types d'agents ici...
-		
-		
-		//In a new environment, if enumeration is chosen, then please DO NOT change the following code in enum.
-		private Class<? extends Agent> agentClass;
-
-		<T extends Agent> AgentTypes(Class<T> agentClass){
-			this.agentClass = agentClass;
-		}
-		@Override
-		public Class<? extends Agent> getAgentClass() {
-			return agentClass;
-		}
-	}
+//	public enum AgentTypes  implements AgentTypeContainer{
+//		PHILOSOPHE(Philosophe.class);
+//		//...
+//		//Ajouter des nouveaux types d'agents ici...
+//		
+//		
+//		//In a new environment, if enumeration is chosen, then please DO NOT change the following code in enum.
+//		private Class<? extends Agent> agentClass;
+//
+//		<T extends Agent> AgentTypes(Class<T> agentClass){
+//			this.agentClass = agentClass;
+//		}
+//		@Override
+//		public Class<? extends Agent> getAgentClass() {
+//			return agentClass;
+//		}
+//	}
 
 
 	/**
@@ -121,7 +121,7 @@ public class EnvironnementPhilo extends Environnement {
 	public Philosophe ajouterPhilosophe(String nom) {
 		//TODO Ajouter le philosophe et les fourchettes.
 		Philosophe p = new Philosophe(this, nom);
-		if (getAgents(AgentTypes.PHILOSOPHE).isEmpty()) {
+		if (getAgents(PhiloAgentsEnum.PHILOSOPHE).isEmpty()) {
 			//On ajoute la fourchette zero si jamais on n'a pas encore mis de philosophe.
 			fourchettes.add(new Fourchette());
 		}
@@ -131,7 +131,7 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	public int getPosition(Philosophe p) {
-		return getAgents(AgentTypes.PHILOSOPHE).indexOf(p);
+		return getAgents(PhiloAgentsEnum.PHILOSOPHE).indexOf(p);
 	}
 
 	public Fourchette fourchetteGauche(Philosophe p){
@@ -139,11 +139,11 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	public Fourchette fourchetteDroite(Philosophe p){
-		return fourchettes.get((getPosition(p) + 1) % getAgents(AgentTypes.PHILOSOPHE).size());
+		return fourchettes.get((getPosition(p) + 1) % getAgents(PhiloAgentsEnum.PHILOSOPHE).size());
 	}
 
 	@Override
 	public List<AgentTypeContainer> getAgentTypes() {
-		return new ArrayList<AgentTypeContainer>(Arrays.asList(AgentTypes.values()));
+		return new ArrayList<AgentTypeContainer>(Arrays.asList(PhiloAgentsEnum.values()));
 	}
 }

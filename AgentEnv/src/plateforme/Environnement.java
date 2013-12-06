@@ -14,7 +14,7 @@ import plateforme.interaction.SendMessageException;
 import plateforme.perception.Perception;
 
 
-public abstract class Environnement implements SendMessageAble, AgentAware {
+public abstract class Environnement<AgentTypes extends Enum<? extends AgentTypeContainer>> implements SendMessageAble, AgentAware {
 	
 	/**
 	 * Agent Management Service.

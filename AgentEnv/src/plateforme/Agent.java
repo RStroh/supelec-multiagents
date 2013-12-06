@@ -1,20 +1,23 @@
 package plateforme;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
-import plateforme.interaction.AMS;
 import plateforme.interaction.Mailbox;
 import plateforme.interaction.Message;
+import plateforme.interaction.SendMessageException;
 import plateforme.interaction.SimpleMailbox;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionContainer;
 
 public abstract class Agent<E extends Environnement> extends Thread implements AgentI{
-
+	
 	protected E env;
 	protected Mailbox<Agent<E>> mailbox = new SimpleMailbox<>();
 	private Etat<Agent<E>> etat;
@@ -28,6 +31,9 @@ public abstract class Agent<E extends Environnement> extends Thread implements A
 	public abstract String percevoir();
 	public abstract String decider();
 	
+	private Class<? extends PerceptionContainer> perceptionContainer;
+	private Class<? extends ActionContainer> actionContainer;
+	
 	@Override
 	public final void run() {
 		while(true){
@@ -40,6 +46,7 @@ public abstract class Agent<E extends Environnement> extends Thread implements A
 			List<Message> courrierReleve = mailbox.relever();
 			for (Message message : courrierReleve) {
 				//TODO Process message.
+				System.out.println("Courrier");
 			}
 			
 			//Percept & decide
@@ -55,7 +62,8 @@ public abstract class Agent<E extends Environnement> extends Thread implements A
 	 * @return
 	 * 
 	 * Un agent ne peut avoir de perception que de son point de vue. 
-	 * L'environnement lui renvoie sa propre perception. D'où le this.
+	 * L'environnement lui renvoie sa propre perception. Pour cela,
+	 * l'environnement doit savoir qui percoit, d'où le this passé en paramètre.
 	 * 
 	 */
 	public <T> T percept(PerceptionContainer p) {
@@ -65,18 +73,11 @@ public abstract class Agent<E extends Environnement> extends Thread implements A
 	public <T> T act(ActionContainer ac) throws WrongActionException {
 		try {
 			if (ac.getAction() == null) throw new UndefinedActionException(String.format("L'action %s n'est pas implémentée.", ac));
-			return (T) getEnv().doAction(this, (Action<Agent, T>) ac.getAction());
+			return (T) getEnv().executeAction(this, (Action<Agent, T>) ac.getAction());
 		} catch (UndefinedActionException e) {
-			throw new RuntimeException(e);
+			throw new WrongActionException("Action invalide.", e);
 		}
 	}
-	
-//	@Override
-//	public AMS getAMS() {
-//		return env.getAMS();
-//	}
-	
-	
 	
 	public Mailbox<Agent<E>> getMailbox() {
 		return mailbox;
@@ -94,5 +95,22 @@ public abstract class Agent<E extends Environnement> extends Thread implements A
 		this.env = env;
 	}
 	
+	@Override
+	public AMS getAms() {
+		return env.getAms();
+	}
+	
+	@Override
+	public void send(Message m) throws SendMessageException {
+		getAms().send(m);
+	}
+	
+	@Override
+	public void sendAsync(Message m, Callback c) throws SendMessageException {
+		getAms().send(m);
+	}
+	
+	protected abstract Class<? extends PerceptionContainer> perceptionContainerClass();
+	protected abstract Class<? extends ActionContainer> actionContainerClass();
 	
 }

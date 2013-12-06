@@ -11,8 +11,8 @@ import plateforme.Agent;
  *	Elle est particulièrement utile si on veut mettre les Perceptions dans une énumération Perceptions.
  *
  */
-public interface PerceptionContainer {
+public interface PerceptionContainer<A extends Agent> {
 	
-	public <T> Perception<? extends Agent,T> getPerception();
+	public <T> Perception<A,T> getPerception();
 	
 }

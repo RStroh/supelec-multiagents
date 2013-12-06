@@ -4,7 +4,7 @@ import philo.Fourchette.EtatFourchette;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionContainer;
 
-public enum PerceptionsPhilosophes implements PerceptionContainer{
+public enum PerceptionsPhilosophes implements PerceptionContainer<Philosophe>{
 	POSITION(new Perception<Philosophe,Integer>(){
 
 		@Override

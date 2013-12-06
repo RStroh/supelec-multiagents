@@ -4,10 +4,12 @@ import static com.codahale.metrics.MetricRegistry.*;
 import static philo.ActionsPhilosophes.*;
 import static philo.EtatsPhilosophe.*;
 import static philo.PerceptionsPhilosophes.*;
+import plateforme.AMS;
 import plateforme.Agent;
 import plateforme.Etat;
+import plateforme.action.ActionContainer;
 import plateforme.action.WrongActionException;
-import plateforme.interaction.AMS;
+import plateforme.perception.PerceptionContainer;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
@@ -16,18 +18,18 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 
 	static int SEUIL_FAIM_INF = -3;
 	static int SEUIL_FAIM_SUP = 3;
-	
 
 	public Philosophe(EnvironnementPhilo env, String nom) {
 		super(env);
 		this.nom = nom;
+		Main.metricsRegistry.register(name(Philosophe.class, "faim-philo-"+nom),faim);
 	}
 
 	private String nom;
-	private int faim = 0;
+//	private int faim = 0;
 	private EtatsPhilosophe etat = PENSE;
 
-	final Counter faimCounter = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
+	final Counter faim = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
 	final Meter penseeProduiteRate = Main.metricsRegistry.meter(name(this.getClass(), nom, "pensee"));
 	
 	public String percevoir() {
@@ -51,7 +53,7 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 			
 			try {
 				act(PENSER);
-				faim++;
+				faim.inc();
 			} catch (WrongActionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,7 +73,7 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 			break;
 
 		case MANGE:
-			faim--;
+			faim.dec();
 			if (!aFaim()) {
 				//poser les fourchettes.
 				try {
@@ -93,7 +95,7 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 	}
 
 	private boolean aFaim() {
-		return faim > SEUIL_FAIM_SUP;
+		return faim.getCount() > SEUIL_FAIM_SUP;
 	}
 
 	private void tryManger() throws WrongActionException {
@@ -121,6 +123,16 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 	public String toString() {
 		return nom;
 	}
+
+	@Override
+	protected Class<? extends PerceptionContainer> perceptionContainerClass() {
+		return PerceptionsPhilosophes.class;
+	}
+
+	@Override
+	protected Class<? extends ActionContainer> actionContainerClass() {
+		return ActionsPhilosophes.class;
+	}
 	
 //	public void incrFaim(int i){
 //		faim = faim -i;
@@ -131,10 +143,4 @@ public class Philosophe extends Agent<EnvironnementPhilo>{
 //		faim = faim-i;
 //		faimCounter.inc(i);
 //	}
-
-	@Override
-	public AMS getAMS() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

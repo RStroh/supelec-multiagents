@@ -6,38 +6,43 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import plateforme.AMS;
 import plateforme.Agent;
-import plateforme.AgentType;
+import plateforme.AgentTypeContainer;
 import plateforme.Environnement;
 import plateforme.Etat;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
-import plateforme.interaction.AMS;
 import plateforme.perception.Perception;
+import plateforme.perception.PerceptionContainer;
 
 public class EnvironnementPhilo extends Environnement {
 
-//	private List<Philosophe> philosophes = new ArrayList<Philosophe>();
-	public enum AgentTypes implements AgentType{
+	public enum AgentTypes  implements AgentTypeContainer{
 		PHILOSOPHE(Philosophe.class);
+		//...
+		//Ajouter des nouveaux types d'agents ici...
+		
+		
+		//In a new environment, if enumeration is chosen, then please DO NOT change the following code in enum.
+		private Class<? extends Agent> agentClass;
 
-		private Class<? extends Agent> agentDescriptionClass;
-		
-		AgentTypes(Class<? extends Agent> agentDescriptionClass){
-			this.agentDescriptionClass = agentDescriptionClass;
+		<T extends Agent> AgentTypes(Class<T> agentClass){
+			this.agentClass = agentClass;
 		}
-		
 		@Override
-		public Class<? extends Agent> getAgentDescriptionClass() {
-			return agentDescriptionClass;
+		public Class<? extends Agent> getAgentClass() {
+			return agentClass;
 		}
-		
 	}
-	
-	private List<Fourchette> fourchettes = new ArrayList<Fourchette>();
 
+
+	/**
+	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
+	 * il a simplement pour but d'écrire des informations dans la console.
+	 */
 	private Agent<EnvironnementPhilo> scribe = new Agent<EnvironnementPhilo>(this) {
 
 		@Override
@@ -47,7 +52,6 @@ public class EnvironnementPhilo extends Environnement {
 
 		@Override
 		public String percevoir() {
-			// TODO Auto-generated method stub
 			return "Scribe: ";
 		}
 
@@ -57,24 +61,22 @@ public class EnvironnementPhilo extends Environnement {
 		}
 
 		@Override
-		public AMS getAMS() {
-			// TODO Auto-generated method stub
-			return null;
+		protected Class<? extends PerceptionContainer> perceptionContainerClass() {
+			return null;	//Pas de perceptions
 		}
 
+		@Override
+		protected Class<? extends ActionContainer> actionContainerClass() {
+			return null;	//Pas d'actions
+		}
 	};
 
+	private List<Fourchette> fourchettes = new ArrayList<Fourchette>();
 	private int penseeProduite;
-	
+
 	public EnvironnementPhilo() {
 		scribe.start();
 	}	
-
-	@Override
-	public boolean doAction(ActionContainer a) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	protected int getPenseeProduite() {
 		return penseeProduite;
@@ -84,22 +86,22 @@ public class EnvironnementPhilo extends Environnement {
 		penseeProduite++;
 	}
 
-	@Override
-	public ActionContainer[] getActions() {
-		return ActionsPhilosophes.values();
-	}
-
-	@Override
-	public <A extends Agent> Set<Perception<A, ?>> getPerceptions(Class<A> agentClass) {
-		Set<Perception<A, ?>> perceptions = new HashSet<>();
-
-		if(agentClass.equals(PerceptionsPhilosophes.class)){
-			for (PerceptionsPhilosophes p : EnumSet.allOf(PerceptionsPhilosophes.class)) {
-				perceptions.add((Perception<A, ?>) p.getPerception());
-			}
-		}
-		return perceptions;
-	}
+	//	@Override
+	//	public ActionContainer[] getActions() {
+	//		return ActionsPhilosophes.values();
+	//	}
+	//
+	//	@Override
+	//	public <A extends Agent> Set<Perception<A, ?>> getPerceptions(Class<A> agentClass) {
+	//		Set<Perception<A, ?>> perceptions = new HashSet<>();
+	//
+	//		if(agentClass.equals(PerceptionsPhilosophes.class)){
+	//			for (PerceptionsPhilosophes p : EnumSet.allOf(PerceptionsPhilosophes.class)) {
+	//				perceptions.add((Perception<A, ?>) p.getPerception());
+	//			}
+	//		}
+	//		return perceptions;
+	//	}
 
 	public Philosophe ajouterPhilosophe(String nom) {
 		//TODO Ajouter le philosophe et les fourchettes.
@@ -126,17 +128,7 @@ public class EnvironnementPhilo extends Environnement {
 	}
 
 	@Override
-	public <A extends Agent, T> T getPerception(A agent, Perception<A, T> p) {
-		return p.getValue(agent);
-	}
-
-	@Override
-	public <A extends Agent, T> T doAction(A agent, Action<A, T> a) throws UndefinedActionException, WrongActionException {
-		return a.doAction(agent);
-	}
-	
-	@Override
-	public List<AgentType> getAgentTypes() {
-		return new ArrayList<AgentType>(Arrays.asList(AgentTypes.values()));
+	public List<AgentTypeContainer> getAgentTypes() {
+		return new ArrayList<AgentTypeContainer>(Arrays.asList(AgentTypes.values()));
 	}
 }

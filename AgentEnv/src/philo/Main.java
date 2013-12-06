@@ -1,27 +1,43 @@
 package philo;
 
+import static com.codahale.metrics.MetricRegistry.*;
+
+import java.io.File;
 import java.net.InetSocketAddress;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
 
 public class Main {
 
 	public static final MetricRegistry metricsRegistry = new MetricRegistry();
 
 	public static final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
-	public static final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsRegistry)
-			.prefixedWith("multiagents.philosophes")
+	//	public static final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsRegistry)
+	//			.prefixedWith("multiagents.philosophes")
+	//			.convertRatesTo(TimeUnit.SECONDS)
+	//			.convertDurationsTo(TimeUnit.MILLISECONDS)
+	//			.filter(MetricFilter.ALL)
+	//			.withClock(new CpuTimeClock())
+	//			.build(graphite);
+	/**
+	 * Objet Reporter qui permet de voir l'évolution des paramètres du problème au cours du temps.
+	 */
+	public static final CsvReporter reporter = CsvReporter.forRegistry(metricsRegistry)
+			.formatFor(Locale.FRANCE)
 			.convertRatesTo(TimeUnit.SECONDS)
 			.convertDurationsTo(TimeUnit.MILLISECONDS)
-			.filter(MetricFilter.ALL)
-			.build(graphite);
+			.build(new File("stats/"));
 
 	public static void main(String[] args) {
-		
+		//On reporte l'état du système périodiquement.
+		reporter.start(1, TimeUnit.SECONDS);
+		final Counter evictions = metricsRegistry.counter(name("newCounter", "cache-evictions"));
+
 		EnvironnementPhilo env = new EnvironnementPhilo();
 
 		//Création des agents
@@ -36,7 +52,17 @@ public class Main {
 		p2.start();
 		p3.start();
 		p4.start();
-		
+
+		while (true){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			evictions.inc();
+			reporter.report();
+		}
 	}
 
 }

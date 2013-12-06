@@ -1,9 +1,8 @@
-package plateforme;
+package plateforme.interaction;
 
 import javax.security.auth.callback.Callback;
 
-import plateforme.interaction.Message;
-import plateforme.interaction.SendMessageException;
+import plateforme.AMS;
 
 /**
  * Décrit les objets capables d'envoyer des messages.

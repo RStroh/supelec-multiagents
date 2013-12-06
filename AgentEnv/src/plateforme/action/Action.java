@@ -10,7 +10,7 @@ import plateforme.Agent;
  *
  * @param <A,T>
  */
-public abstract class Action<A extends Agent,T> {
+public interface Action<A extends Agent, ReturnType> {
 	/**
 	 * Ac
 	 * Retourne la valeur du résultat de l'action (s'il existe) pour l'agent qui demande.
@@ -18,6 +18,6 @@ public abstract class Action<A extends Agent,T> {
 	 * @return
 	 * @throws WrongActionException 
 	 */
-	public abstract T doAction(A agent) throws WrongActionException;
+	public abstract ReturnType doAction(A agent) throws WrongActionException;
 	
 }

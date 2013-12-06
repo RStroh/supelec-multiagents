@@ -9,6 +9,7 @@ public enum ActionsPhilosophes implements ActionContainer<Philosophe>{
 
 		@Override
 		public Void doAction(Philosophe p) {
+			//Implémenter
 			return null;
 		}
 

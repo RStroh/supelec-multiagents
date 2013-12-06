@@ -11,6 +11,8 @@ import plateforme.Agent;
 import plateforme.AgentTypeContainer;
 import plateforme.Environnement;
 import plateforme.Etat;
+import plateforme.NoPerceptions;
+import plateforme.NoStates;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.UndefinedActionException;
@@ -43,12 +45,7 @@ public class EnvironnementPhilo extends Environnement {
 	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
 	 * il a simplement pour but d'écrire des informations dans la console.
 	 */
-	private Agent<EnvironnementPhilo> scribe = new Agent<EnvironnementPhilo>(this) {
-
-		@Override
-		public Etat<Philosophe> etatInitial() {
-			return null;
-		}
+	private Agent<EnvironnementPhilo, ?, ?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions>(this) {
 
 		@Override
 		public String percevoir() {
@@ -68,6 +65,23 @@ public class EnvironnementPhilo extends Environnement {
 		@Override
 		protected Class<? extends ActionContainer> actionContainerClass() {
 			return null;	//Pas d'actions
+		}
+
+		@Override
+		public List<Action> getActions() {
+			return null;	//Pas d'actions
+		}
+
+		@Override
+		public Class<? extends Enum<? extends Etat>> getAgentStates() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public NoStates etatInitial() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	};
 

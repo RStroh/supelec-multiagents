@@ -9,6 +9,7 @@ import plateforme.action.Action;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
 import plateforme.interaction.Message;
+import plateforme.interaction.SendMessageAble;
 import plateforme.interaction.SendMessageException;
 import plateforme.perception.Perception;
 
@@ -37,6 +38,8 @@ public abstract class Environnement implements SendMessageAble, AgentAware {
 		}
 		return Collections.unmodifiableList(res);
 	};
+	
+//	public enum 
 	
 	/**
 	 * Méthode générique pour exécuter l'action d'un acteur dans l'environnement.

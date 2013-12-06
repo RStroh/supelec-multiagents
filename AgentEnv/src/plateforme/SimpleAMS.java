@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
+import plateforme.action.Action;
 import plateforme.interaction.Message;
 import plateforme.interaction.SendMessageException;
 
@@ -35,6 +36,10 @@ public class SimpleAMS implements AMS {
 	@Override
 	public void sendAsync(Message m, Callback c) throws SendMessageException {
 		
+	}
+	@Override
+	public <A extends Agent> List<Action<A, ?>> getActions(A agent) {
+		return agent.getActions();
 	}
 
 }

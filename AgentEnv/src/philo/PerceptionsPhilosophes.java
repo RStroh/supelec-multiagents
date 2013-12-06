@@ -30,11 +30,18 @@ public enum PerceptionsPhilosophes implements PerceptionContainer<Philosophe>{
 		}
 
 	}),
+	ETAT_FOURCHETTE_G(new Perception<Philosophe, EtatFourchette>(){
+
+		@Override
+		public EtatFourchette getValue(Philosophe p) {
+			return p.getEnv().fourchetteGauche(p).getEtat();
+		}
+	}),
 	ETAT_FOURCHETTE_D(new Perception<Philosophe, EtatFourchette>(){
 
 		@Override
 		public EtatFourchette getValue(Philosophe p) {
-			return null;
+			return p.getEnv().fourchetteDroite(p).getEtat();
 		}
 	});
 

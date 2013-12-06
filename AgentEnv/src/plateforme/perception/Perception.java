@@ -10,7 +10,7 @@ import plateforme.Agent;
  *
  * @param <A,T>
  */
-public abstract class Perception<A extends Agent,T> {
+public interface Perception<A extends Agent,T> {
 	/**
 	 * 
 	 * Retourne la valeur du résultat de la perception pour l'agent qui demande.

@@ -2,17 +2,15 @@ package philo;
 
 import philo.Fourchette.EtatFourchette;
 import plateforme.perception.Perception;
-import plateforme.perception.PerceptionContainer;
+import plateforme.perception.PerceptionEnum;
 
-public enum PerceptionsPhilosophes implements PerceptionContainer<Philosophe>{
+public enum PerceptionsPhilosophes implements PerceptionEnum<Philosophe>{
 	POSITION(new Perception<Philosophe,Integer>(){
 
 		@Override
 		public Integer getValue(Philosophe p) {
 			return p.getEnv().getPosition(p);
-
 		}
-
 	}),
 	A_FOURCHETTE_G(	new Perception<Philosophe,Boolean>() {
 

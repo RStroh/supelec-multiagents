@@ -11,6 +11,7 @@ import plateforme.Agent;
 import plateforme.AgentTypeContainer;
 import plateforme.Environnement;
 import plateforme.Etat;
+import plateforme.NoActions;
 import plateforme.NoPerceptions;
 import plateforme.NoStates;
 import plateforme.action.Action;
@@ -18,7 +19,7 @@ import plateforme.action.ActionContainer;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
 import plateforme.perception.Perception;
-import plateforme.perception.PerceptionContainer;
+import plateforme.perception.PerceptionEnum;
 
 public class EnvironnementPhilo extends Environnement {
 
@@ -45,7 +46,7 @@ public class EnvironnementPhilo extends Environnement {
 	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
 	 * il a simplement pour but d'écrire des informations dans la console.
 	 */
-	private Agent<EnvironnementPhilo, ?, ?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions>(this) {
+	private Agent<EnvironnementPhilo, ?, ?,?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions, NoActions>(this) {
 
 		@Override
 		public String percevoir() {
@@ -58,7 +59,7 @@ public class EnvironnementPhilo extends Environnement {
 		}
 
 		@Override
-		protected Class<? extends PerceptionContainer> perceptionContainerClass() {
+		protected Class<? extends PerceptionEnum> perceptionContainerClass() {
 			return null;	//Pas de perceptions
 		}
 

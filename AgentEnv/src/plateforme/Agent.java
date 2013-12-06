@@ -14,7 +14,7 @@ import plateforme.interaction.Message;
 import plateforme.interaction.SendMessageException;
 import plateforme.interaction.SimpleMailbox;
 import plateforme.perception.Perception;
-import plateforme.perception.PerceptionContainer;
+import plateforme.perception.PerceptionEnum;
 
 /**
  * S est un type Enum dévrivant les états possibles pour cet agent.
@@ -22,17 +22,17 @@ import plateforme.perception.PerceptionContainer;
  * @author thomas
  *
  * @param <E>
- * @param <StateEnum>
+ * @param <StateEnumType>
  */
 public abstract class Agent<E extends Environnement,
-		StateEnum extends Enum<? extends Etat<? extends Agent>>,
-		PerceptionEnum extends Enum<? extends PerceptionContainer>,
-		ActionsEnum extends Enum<? extends ActionContainer<? extends Agent, ?>>> extends Thread implements AgentI{
+		StateEnumType extends Enum<? extends Etat<? extends Agent>>,
+		PerceptionEnumType extends Enum<? extends PerceptionEnum>,
+		ActionsEnumType extends Enum<? extends ActionContainer<? extends Agent>>> extends Thread implements AgentI{
 	//<? extends Perception<? extends Agent<E, ?, ?>, ?>>
 	protected E env;
 	protected Mailbox<Agent<E,?,?,?>> mailbox = new SimpleMailbox<>();
-	private Class<? extends PerceptionContainer> perceptionContainer;
-	private StateEnum agentState;
+	private Class<? extends PerceptionEnum> perceptionContainer;
+	private StateEnumType agentState;
 
 	public Agent(E env) {
 		this.setEnv(env);
@@ -40,10 +40,10 @@ public abstract class Agent<E extends Environnement,
 	}
 
 	//Abstrait
-	public abstract StateEnum etatInitial();
+	public abstract StateEnumType etatInitial();
 	public abstract String percevoir();
 	public abstract String decider();
-	protected abstract Class<? extends PerceptionContainer> perceptionContainerClass();
+	protected abstract Class<? extends PerceptionEnum> perceptionContainerClass();
 	protected abstract Class<? extends ActionContainer> actionContainerClass();
 	abstract public Class<? extends Enum<? extends Etat>> getAgentStates();
 
@@ -87,7 +87,7 @@ public abstract class Agent<E extends Environnement,
 	 * l'environnement doit savoir qui percoit, d'où le this passé en paramètre.
 	 * 
 	 */
-	public <T> T percept(PerceptionContainer p) {
+	public <T> T percept(PerceptionEnum p) {
 		return (T) getEnv().getPerception(this, (Perception<Agent, T>) p.getPerception());
 	}
 
@@ -131,12 +131,12 @@ public abstract class Agent<E extends Environnement,
 		getAms().send(m);
 	}
 
-	public StateEnum getAgentState() {
+	public StateEnumType getAgentState() {
 		return agentState;
 	}
 
-	public void setAgentState(StateEnum agentState) {
+	public void setAgentState(StateEnumType agentState) {
 		this.agentState = agentState;
 	}
-
+	
 }

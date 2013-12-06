@@ -1,12 +1,14 @@
 package plateforme;
 
 import plateforme.perception.Perception;
+import plateforme.perception.PerceptionEnum;
 
-public enum NoPerceptions implements Perception<Agent, Void>{
+public enum NoPerceptions implements PerceptionEnum<Agent>{
 	;
 
 	@Override
-	public Void getValue(Agent agent) {
+	public <T> Perception<Agent, T> getPerception() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

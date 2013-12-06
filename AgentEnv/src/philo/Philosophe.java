@@ -14,7 +14,7 @@ import plateforme.Etat;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.WrongActionException;
-import plateforme.perception.PerceptionContainer;
+import plateforme.perception.PerceptionEnum;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
@@ -146,7 +146,7 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 	}
 
 	@Override
-	protected Class<? extends PerceptionContainer> perceptionContainerClass() {
+	protected Class<? extends PerceptionEnum> perceptionContainerClass() {
 		return PerceptionsPhilosophes.class;
 	}
 

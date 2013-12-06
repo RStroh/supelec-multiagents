@@ -1,5 +1,6 @@
 package plateforme;
 
+import plateforme.agent.Agent;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionEnum;
 

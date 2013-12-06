@@ -1,6 +1,6 @@
 package plateforme.perception;
 
-import plateforme.Agent;
+import plateforme.agent.Agent;
 
 /**
  * @author thomas

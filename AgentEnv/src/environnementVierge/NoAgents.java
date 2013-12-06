@@ -1,7 +1,7 @@
 package environnementVierge;
 
-import plateforme.Agent;
-import plateforme.AgentTypeContainer;
+import plateforme.agent.Agent;
+import plateforme.agent.AgentTypeContainer;
 
 public enum NoAgents implements AgentTypeContainer{
 	;

@@ -1,7 +1,7 @@
 package philo;
 
-import plateforme.Agent;
-import plateforme.AgentTypeContainer;
+import plateforme.agent.Agent;
+import plateforme.agent.AgentTypeContainer;
 
 public enum PhiloAgentsEnum implements AgentTypeContainer{
 		PHILOSOPHE(Philosophe.class);

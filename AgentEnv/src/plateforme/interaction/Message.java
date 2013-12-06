@@ -1,6 +1,6 @@
 package plateforme.interaction;
 
-import plateforme.Agent;
+import plateforme.agent.Agent;
 
 
 public class Message {

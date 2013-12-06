@@ -1,6 +1,6 @@
 package plateforme.action;
 
-import plateforme.Agent;
+import plateforme.agent.Agent;
 
 /**
  * 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import plateforme.Agent;
+import plateforme.agent.Agent;
 
 public class SimpleMailbox<A extends Agent> implements Mailbox<A>{
 

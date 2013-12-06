@@ -1,6 +1,6 @@
 package philo;
 
-import plateforme.Etat;
+import plateforme.agent.Etat;
 
 
 public enum EtatsPhilosophe implements Etat<Philosophe>{

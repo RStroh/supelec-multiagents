@@ -1,7 +1,8 @@
-package plateforme;
+package plateforme.agent;
 
 import javax.security.auth.callback.Callback;
 
+import plateforme.AMS;
 import plateforme.interaction.Message;
 import plateforme.interaction.SendMessageException;
 

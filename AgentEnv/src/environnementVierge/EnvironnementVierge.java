@@ -2,8 +2,8 @@ package environnementVierge;
 
 import java.util.List;
 
-import plateforme.AgentTypeContainer;
 import plateforme.Environnement;
+import plateforme.agent.AgentTypeContainer;
 
 public class EnvironnementVierge extends Environnement<NoAgents>{
 

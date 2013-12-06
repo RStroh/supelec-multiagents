@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import philo.Fourchette.EtatFourchette;
-import plateforme.Agent;
-import plateforme.Etat;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.WrongActionException;
+import plateforme.agent.Agent;
+import plateforme.agent.Etat;
 import plateforme.perception.PerceptionEnum;
 
 import com.codahale.metrics.Counter;

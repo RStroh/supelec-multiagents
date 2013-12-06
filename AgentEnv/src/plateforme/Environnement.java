@@ -8,6 +8,9 @@ import javax.security.auth.callback.Callback;
 import plateforme.action.Action;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
+import plateforme.agent.Agent;
+import plateforme.agent.AgentAware;
+import plateforme.agent.AgentTypeContainer;
 import plateforme.interaction.Message;
 import plateforme.interaction.SendMessageAble;
 import plateforme.interaction.SendMessageException;
@@ -50,7 +53,7 @@ public abstract class Environnement<AgentTypes extends Enum<? extends AgentTypeC
 	 * @throws UndefinedActionException
 	 * @throws WrongActionException
 	 */
-	protected <A extends Agent, T> T executeAction(A agent, Action<A, T> a) throws UndefinedActionException, WrongActionException {
+	public <A extends Agent, T> T executeAction(A agent, Action<A, T> a) throws UndefinedActionException, WrongActionException {
 		return a.doAction(agent);
 	}
 	

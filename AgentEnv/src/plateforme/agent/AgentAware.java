@@ -1,4 +1,4 @@
-package plateforme;
+package plateforme.agent;
 
 import java.util.List;
 

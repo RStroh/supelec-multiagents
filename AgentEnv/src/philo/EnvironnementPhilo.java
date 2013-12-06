@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 import plateforme.AMS;
-import plateforme.Agent;
-import plateforme.AgentTypeContainer;
 import plateforme.Environnement;
-import plateforme.Etat;
-import plateforme.NoActions;
 import plateforme.NoPerceptions;
-import plateforme.NoStates;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
+import plateforme.action.NoActions;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
+import plateforme.agent.Agent;
+import plateforme.agent.AgentTypeContainer;
+import plateforme.agent.Etat;
+import plateforme.agent.NoStates;
 import plateforme.perception.Perception;
 import plateforme.perception.PerceptionEnum;
 

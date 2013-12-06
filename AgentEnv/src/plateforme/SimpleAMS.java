@@ -7,6 +7,7 @@ import java.util.List;
 import javax.security.auth.callback.Callback;
 
 import plateforme.action.Action;
+import plateforme.agent.Agent;
 import plateforme.interaction.Message;
 import plateforme.interaction.SendMessageException;
 

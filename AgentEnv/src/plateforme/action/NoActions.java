@@ -1,7 +1,6 @@
-package plateforme;
+package plateforme.action;
 
-import plateforme.action.Action;
-import plateforme.action.ActionContainer;
+import plateforme.agent.Agent;
 
 public enum NoActions implements ActionContainer<Agent>{
 	;

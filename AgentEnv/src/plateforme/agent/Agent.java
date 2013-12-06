@@ -1,10 +1,12 @@
-package plateforme;
+package plateforme.agent;
 
 import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
 import philo.EnvironnementPhilo;
+import plateforme.AMS;
+import plateforme.Environnement;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.UndefinedActionException;

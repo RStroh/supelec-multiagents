@@ -14,10 +14,17 @@ public enum ActionsPhilosophesEnum implements ActionContainer<Philosophe>{
 		}
 
 	}),
-	PENSER(new Action<Philosophe, Void>(){
+	PENSER(
+	/**
+	 * 
+	 * 
+	 * @author thomas
+	 *
+	 */
+	new Action<Philosophe, Integer>(){
 
 		@Override
-		public Void doAction(Philosophe p) {
+		public Integer doAction(Philosophe p) {
 			p.getEnv().produirePensee(p);
 			return null;
 		}

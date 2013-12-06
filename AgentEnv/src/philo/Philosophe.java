@@ -21,20 +21,20 @@ import com.codahale.metrics.Meter;
 
 public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, PerceptionsPhilosophes, ActionsPhilosophesEnum>{
 
-	static int SEUIL_FAIM_INF = -3;
-	static int SEUIL_FAIM_SUP = 3;
+	static int SEUIL_FAIM = -3;
+	static int SEUIL_CREVE_DE_FAIM = -10;
+	static int SEUIL_RASSASIE = 3;
+
+	private String nom;
+	final Counter faim = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
+	final Meter penseeProduiteRate = Main.metricsRegistry.meter(name(this.getClass(), nom, "pensee"));
 
 	public Philosophe(EnvironnementPhilo env, String nom) {
 		super(env);
 		this.nom = nom;
 		Main.metricsRegistry.register(name(Philosophe.class, "faim-philo-"+nom),faim);
+		Main.metricsRegistry.register(name(Philosophe.class, "pensee-philo-"+nom), penseeProduiteRate);
 	}
-
-	private String nom;
-	//	private int faim = 0;
-
-	final Counter faim = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
-	final Meter penseeProduiteRate = Main.metricsRegistry.meter(name(this.getClass(), nom, "pensee"));
 
 	public String percevoir() {
 		StringBuilder out = new StringBuilder();
@@ -56,31 +56,33 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 		case PENSE:
 
 			try {
-				act(PENSER);
+				penseeProduiteRate.mark((long) act(PENSER));
 				faim.inc();
 			} catch (WrongActionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			out.append(" // ");
-			out.append((aFaim()) ? "J'ai faim" : "J'ai pas faim.");
+			out.append((aFaim()) ? " // J'ai faim" : " // J'ai pas faim.");
 			if (aFaim()){
 				try {
 					if (fourchettesLibres()) manger();
 					else setAgentState(ATTEND);
 				} catch (WrongActionException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					out.append("// Quelqu'un a pris la fourchette plus vite que moi !");
+					setAgentState(ATTEND);
 				}
 			}
 			break;
 
 		case ATTEND:
-			try {
-				if (fourchettesLibres())	manger();
-			} catch (WrongActionException e1) {
+			if (fourchettesLibres()){
+				try {
+					manger();
+				} catch (WrongActionException e1) {
 
+				}
+			} else if (creveDeFaim()) {
+				
 			}
 			break;
 
@@ -106,6 +108,10 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 		return out.toString();
 	}
 
+	private boolean creveDeFaim() {
+		return faim.getCount() <= SEUIL_CREVE_DE_FAIM;
+	}
+
 	private boolean aLesFourchettes() {
 		return ((boolean)percept(A_FOURCHETTE_G)) && ((boolean)percept(A_FOURCHETTE_D));
 	}
@@ -116,11 +122,11 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 	}
 
 	private boolean estRassasie() {
-		return faim.getCount() <= SEUIL_FAIM_INF;
+		return faim.getCount() <= SEUIL_FAIM;
 	}
 
 	private boolean aFaim() {
-		return faim.getCount() > SEUIL_FAIM_SUP;
+		return faim.getCount() > SEUIL_RASSASIE;
 	}
 
 	private void manger() throws WrongActionException {

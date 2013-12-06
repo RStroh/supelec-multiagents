@@ -23,25 +23,6 @@ import plateforme.perception.PerceptionEnum;
 
 public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
 
-//	public enum AgentTypes  implements AgentTypeContainer{
-//		PHILOSOPHE(Philosophe.class);
-//		//...
-//		//Ajouter des nouveaux types d'agents ici...
-//		
-//		
-//		//In a new environment, if enumeration is chosen, then please DO NOT change the following code in enum.
-//		private Class<? extends Agent> agentClass;
-//
-//		<T extends Agent> AgentTypes(Class<T> agentClass){
-//			this.agentClass = agentClass;
-//		}
-//		@Override
-//		public Class<? extends Agent> getAgentClass() {
-//			return agentClass;
-//		}
-//	}
-
-
 	/**
 	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
 	 * il a simplement pour but d'écrire des informations dans la console.
@@ -97,26 +78,9 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum> {
 		return penseeProduite;
 	}
 
-	protected void produirePensee(Philosophe p) {
-		penseeProduite++;
+	protected int produirePensee(Philosophe p) {
+		return ++penseeProduite;
 	}
-
-	//	@Override
-	//	public ActionContainer[] getActions() {
-	//		return ActionsPhilosophesEnum.values();
-	//	}
-	//
-	//	@Override
-	//	public <A extends Agent> Set<Perception<A, ?>> getPerceptions(Class<A> agentClass) {
-	//		Set<Perception<A, ?>> perceptions = new HashSet<>();
-	//
-	//		if(agentClass.equals(PerceptionsPhilosophes.class)){
-	//			for (PerceptionsPhilosophes p : EnumSet.allOf(PerceptionsPhilosophes.class)) {
-	//				perceptions.add((Perception<A, ?>) p.getPerception());
-	//			}
-	//		}
-	//		return perceptions;
-	//	}
 
 	public Philosophe ajouterPhilosophe(String nom) {
 		//TODO Ajouter le philosophe et les fourchettes.

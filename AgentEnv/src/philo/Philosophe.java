@@ -27,14 +27,14 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 	static int SEUIL_RASSASIE = 3;
 
 	private String nom;
-	final Counter faim = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
-	final Meter penseeProduiteRate = Main.metricsRegistry.meter(name(this.getClass(), nom, "pensee"));
+	final Counter faim;
+	final Meter penseeProduite;
 
 	public Philosophe(EnvironnementPhilo env, String nom) {
 		super(env);
 		this.nom = nom;
-		Main.metricsRegistry.register(name(Philosophe.class, "faim-philo-"+nom),faim);
-		Main.metricsRegistry.register(name(Philosophe.class, "pensee-philo-"+nom), penseeProduiteRate);
+		faim = Main.metricsRegistry.counter(name("faim -"+nom, "faim"));
+		penseeProduite = Main.metricsRegistry.meter(name(Philosophe.class, nom, "pensee"));
 	}
 
 	public String percevoir() {
@@ -58,7 +58,7 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 
 			try {
 				//On ajoute la pensée produite par le philosophe aux stats.
-				penseeProduiteRate.mark((long) act(PENSER));
+				penseeProduite.mark((long) act(PENSER));
 				faim.inc();
 			} catch (WrongActionException e) {
 				// TODO Auto-generated catch block

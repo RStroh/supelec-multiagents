@@ -19,7 +19,7 @@ public class SimpleMailbox<A extends Agent> implements Mailbox<A>{
 	@Override
 	public List<Message> relever() {
 		ArrayList<Message> res = new ArrayList<>();
-		messages.drainTo(res);
+		messages.drainTo(res);	//On 'draine' les messages vers le courrier relevé.
 		return res;
 	}
 }

@@ -32,6 +32,11 @@
         <artifactId>metrics-graphite</artifactId>
         <version>${metrics.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.directory.studio</groupId>
+    	<artifactId>org.apache.commons.io</artifactId>
+    	<version>2.4</version>
+    </dependency>
   </dependencies>
   <properties>
   	<metrics.version>3.0.1</metrics.version>

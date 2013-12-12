@@ -1,16 +1,20 @@
 package philo;
 
-import java.net.InetSocketAddress;
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-import com.codahale.metrics.JmxReporter;
+import org.apache.commons.io.FileUtils;
+
+import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.graphite.Graphite;
 
 public class Main {
 
 	public static final MetricRegistry metricsRegistry = new MetricRegistry();
 
-	public static final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
+//	public static final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
 	//	public static final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsRegistry)
 	//			.prefixedWith("multiagents.philosophes")
 	//			.convertRatesTo(TimeUnit.SECONDS)
@@ -21,18 +25,19 @@ public class Main {
 	/**
 	 * Objet Reporter qui permet de voir l'évolution des paramètres du problème au cours du temps.
 	 */
-//	public static final CsvReporter reporter = CsvReporter.forRegistry(metricsRegistry)
-//			.formatFor(Locale.FRANCE)
-//			.convertRatesTo(TimeUnit.SECONDS)
-//			.convertDurationsTo(TimeUnit.MILLISECONDS)
-//			.build(new File("stats/"));
-	public static final JmxReporter reporter = JmxReporter.forRegistry(metricsRegistry)
-			.build();
-	public static void main(String[] args) {
+	public static final CsvReporter reporter = CsvReporter.forRegistry(metricsRegistry)
+			.formatFor(Locale.FRANCE)
+			.convertRatesTo(TimeUnit.MILLISECONDS)
+			.convertDurationsTo(TimeUnit.MILLISECONDS)
+			.build(new File("stats/"));
+//	public static final JmxReporter reporter = JmxReporter.forRegistry(metricsRegistry)
+//			.build();
+	public static void main(String[] args) throws IOException {
 		//On reporte l'état du système périodiquement.
-		reporter.start();
+//		reporter.start(100, TimeUnit.MILLISECONDS);
 //		final Counter evictions = metricsRegistry.counter(name("newCounter", "cache-evictions"));
-
+		FileUtils.cleanDirectory(new File("stats"));
+		
 		EnvironnementPhilo env = new EnvironnementPhilo();
 
 		//Création des agents

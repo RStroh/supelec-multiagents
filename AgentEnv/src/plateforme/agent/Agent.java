@@ -5,6 +5,7 @@ import java.util.List;
 import javax.security.auth.callback.Callback;
 
 import philo.EnvironnementPhilo;
+import philo.Main;
 import plateforme.AMS;
 import plateforme.Environnement;
 import plateforme.action.Action;
@@ -64,7 +65,7 @@ public abstract class Agent<E extends Environnement,
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				
+				e.printStackTrace();
 			}
 
 			//TODO Process messages if mailbox not empty
@@ -81,6 +82,7 @@ public abstract class Agent<E extends Environnement,
 			out.append(percevoir());
 			out.append(decider());
 			System.out.println(out);
+			Main.reporter.report();
 		}
 	}
 

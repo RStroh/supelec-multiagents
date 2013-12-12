@@ -1,26 +1,23 @@
 package philo;
+import static com.codahale.metrics.MetricRegistry.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import plateforme.AMS;
 import plateforme.DefaultPerformatifs;
 import plateforme.Environnement;
 import plateforme.NoPerceptions;
 import plateforme.action.Action;
 import plateforme.action.ActionContainer;
 import plateforme.action.NoActions;
-import plateforme.action.UndefinedActionException;
-import plateforme.action.WrongActionException;
 import plateforme.agent.Agent;
 import plateforme.agent.AgentTypeContainer;
 import plateforme.agent.Etat;
 import plateforme.agent.NoStates;
-import plateforme.perception.Perception;
 import plateforme.perception.PerceptionEnum;
+
+import com.codahale.metrics.Meter;
 
 public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPerformatifs> {
 
@@ -28,7 +25,7 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPe
 	 * L'agent défini ci-après n'est pas référencé dans les agents de l'environnement, 
 	 * il a simplement pour but d'écrire des informations dans la console.
 	 */
-	private Agent<EnvironnementPhilo, ?, ?,?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions, NoActions>(this) {
+	private Agent<EnvironnementPhilo,?,?,?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions, NoActions>(this) {
 
 		@Override
 		public String percevoir() {
@@ -69,19 +66,20 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPe
 	};
 
 	private List<Fourchette> fourchettes = new ArrayList<Fourchette>();
-	private int penseeProduite;
+	final Meter penseeProduite = Main.metricsRegistry.meter(name(this.getClass(), "penseeTotale"));
 
 	public EnvironnementPhilo() {
 		scribe.start();
+
 	}	
 
 	protected int getPenseeProduite() {
-		return penseeProduite;
+		return (int) penseeProduite.getCount();
 	}
 
 	protected int produirePensee(Philosophe p) {
 		int incr = 1;
-		penseeProduite = penseeProduite + incr;
+		penseeProduite.mark(incr);
 		return incr;
 	}
 

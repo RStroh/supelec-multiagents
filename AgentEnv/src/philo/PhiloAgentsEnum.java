@@ -8,7 +8,6 @@ public enum PhiloAgentsEnum implements AgentTypeContainer{
 		//...
 		//Ajouter des nouveaux types d'agents ici...
 		
-		
 		//In a new environment, if enumeration is chosen, then please DO NOT change the following code in enum.
 		private Class<? extends Agent> agentClass;
 

@@ -14,14 +14,6 @@ public class Main {
 
 	public static final MetricRegistry metricsRegistry = new MetricRegistry();
 
-//	public static final Graphite graphite = new Graphite(new InetSocketAddress("localhost", 2003));
-	//	public static final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsRegistry)
-	//			.prefixedWith("multiagents.philosophes")
-	//			.convertRatesTo(TimeUnit.SECONDS)
-	//			.convertDurationsTo(TimeUnit.MILLISECONDS)
-	//			.filter(MetricFilter.ALL)
-	//			.withClock(new CpuTimeClock())
-	//			.build(graphite);
 	/**
 	 * Objet Reporter qui permet de voir l'évolution des paramètres du problème au cours du temps.
 	 */
@@ -30,14 +22,8 @@ public class Main {
 			.convertRatesTo(TimeUnit.MILLISECONDS)
 			.convertDurationsTo(TimeUnit.MILLISECONDS)
 			.build(new File("stats/"));
-//	public static final JmxReporter reporter = JmxReporter.forRegistry(metricsRegistry)
-//			.build();
 	public static void main(String[] args) throws IOException {
-		//On reporte l'état du système périodiquement.
-//		reporter.start(100, TimeUnit.MILLISECONDS);
-//		final Counter evictions = metricsRegistry.counter(name("newCounter", "cache-evictions"));
 		FileUtils.cleanDirectory(new File("stats"));
-		
 		EnvironnementPhilo env = new EnvironnementPhilo();
 
 		//Création des agents
@@ -53,16 +39,6 @@ public class Main {
 		p3.start();
 		p4.start();
 
-//		while (true){
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			evictions.inc();
-//			reporter.report();
-//		}
 	}
 
 }

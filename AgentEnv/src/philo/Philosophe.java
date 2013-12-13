@@ -126,20 +126,20 @@ public class Philosophe extends Agent<EnvironnementPhilo, EtatsPhilosophe, Perce
 				}
 				setAgentState(PENSE);
 			} 
-//			else if (voisinMortDeFaim){
-//				if(!this.creveDeFaim()){
+			else if (voisinMortDeFaim){
+				if(!this.creveDeFaim()){
 					out.append(" // JE POSE LES FOURCHETTES");
-					//On accepte de poser les fourchettes.
-//					try {
-//						act(POSER_FOURCHETTE_D);
-//						act(POSER_FOURCHETTE_G);
-//					} catch (WrongActionException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					setAgentState(PENSE);
-//				}
-//			}
+//					On accepte de poser les fourchettes.
+					try {
+						act(POSER_FOURCHETTE_D);
+						act(POSER_FOURCHETTE_G);
+					} catch (WrongActionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					setAgentState(PENSE);
+				}
+			}
 			break;
 
 		default:

@@ -2,7 +2,7 @@ package plateforme.action;
 
 import plateforme.agent.Agent;
 
-public enum NoActions implements ActionContainer<Agent>{
+public enum NoActions implements ActionEnum<Agent>{
 	;
 
 	@Override

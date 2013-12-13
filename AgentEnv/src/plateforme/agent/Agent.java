@@ -4,12 +4,11 @@ import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
-import philo.EnvironnementPhilo;
 import philo.Main;
 import plateforme.AMS;
 import plateforme.Environnement;
 import plateforme.action.Action;
-import plateforme.action.ActionContainer;
+import plateforme.action.ActionEnum;
 import plateforme.action.UndefinedActionException;
 import plateforme.action.WrongActionException;
 import plateforme.interaction.Mailbox;
@@ -30,7 +29,7 @@ import plateforme.perception.PerceptionEnum;
 public abstract class Agent<E extends Environnement,
 		StateEnumType extends Enum<? extends Etat<? extends Agent>>,
 		PerceptionEnumType extends Enum<? extends PerceptionEnum>,
-		ActionsEnumType extends Enum<? extends ActionContainer<? extends Agent>>> extends Thread implements AgentI{
+		ActionsEnumType extends Enum<? extends ActionEnum<? extends Agent>>> extends Thread implements AgentI{
 
 	protected E env;
 	protected Mailbox<Agent<E,?,?,?>> mailbox = new SimpleMailbox<>();
@@ -44,10 +43,14 @@ public abstract class Agent<E extends Environnement,
 
 	//Abstrait
 	public abstract StateEnumType etatInitial();
-	public abstract String percevoir();
-	public abstract String decider();
+	/**
+	 * Les perceptions sont possibles en même temps que la décision.
+	 * 
+	 * @return
+	 */
+	public abstract String percevoirEtDecider();
 	protected abstract Class<? extends PerceptionEnum> perceptionContainerClass();
-	protected abstract Class<? extends ActionContainer> actionContainerClass();
+	protected abstract Class<? extends ActionEnum> actionContainerClass();
 	abstract public Class<? extends Enum<? extends Etat>> getAgentStates();
 
 	/**
@@ -73,18 +76,19 @@ public abstract class Agent<E extends Environnement,
 			for (Message message : courrierReleve) {
 				//TODO Process message.
 				//Recupérer la pile de courrier.
-				
-				System.out.println("Courrier");
+				lireCourrier(courrierReleve);
 			}
 
 			//Percept & decide
 			StringBuilder out = new StringBuilder();
-			out.append(percevoir());
-			out.append(decider());
+//			out.append(percevoir());
+			out.append(percevoirEtDecider());
 			System.out.println(out);
 			Main.reporter.report();
 		}
 	}
+
+	public abstract void lireCourrier(List<Message> courrierReleve);
 
 	/**
 	 * @param p
@@ -99,7 +103,7 @@ public abstract class Agent<E extends Environnement,
 		return (T) getEnv().getPerception(this, (Perception<Agent, T>) p.getPerception());
 	}
 
-	public <T> T act(ActionContainer ac) throws WrongActionException {
+	public <T> T act(ActionEnum ac) throws WrongActionException {
 		try {
 			if (ac.getAction() == null) throw new UndefinedActionException(String.format("L'action %s n'est pas implémentée.", ac));
 			return (T) getEnv().executeAction(this, (Action<Agent, T>) ac.getAction());

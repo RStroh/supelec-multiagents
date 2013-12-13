@@ -12,7 +12,7 @@ import plateforme.agent.Agent;
  *	dans une énumération Actions de l'environnement.
  *
  */
-public interface ActionContainer<A extends Agent> {
+public interface ActionEnum<A extends Agent> {
 
 	public <T> Action<A,T> getAction();
 	

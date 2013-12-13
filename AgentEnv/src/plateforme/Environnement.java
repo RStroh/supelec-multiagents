@@ -90,5 +90,5 @@ public abstract class Environnement<AgentTypes extends Enum<? extends AgentTypeC
 	public void sendAsync(Message m, Callback c) throws SendMessageException {
 		getAms().send(m);
 	}
-
+	
 }

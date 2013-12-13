@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AgentAware {
 //	public <A extends Agent> Set<Perception<A, ?>> getPerceptions(Class<A> agentClass);
-//	public ActionContainer[] getActions();
+//	public ActionEnum[] getActions();
 //
 //	public <A extends Agent, T> T getPerception(A agent, Perception<A,T> p);
 //	

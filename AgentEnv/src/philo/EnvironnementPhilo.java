@@ -9,12 +9,13 @@ import plateforme.DefaultPerformatifs;
 import plateforme.Environnement;
 import plateforme.NoPerceptions;
 import plateforme.action.Action;
-import plateforme.action.ActionContainer;
+import plateforme.action.ActionEnum;
 import plateforme.action.NoActions;
 import plateforme.agent.Agent;
 import plateforme.agent.AgentTypeContainer;
 import plateforme.agent.Etat;
 import plateforme.agent.NoStates;
+import plateforme.interaction.Message;
 import plateforme.perception.PerceptionEnum;
 
 import com.codahale.metrics.Meter;
@@ -28,12 +29,7 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPe
 	private Agent<EnvironnementPhilo,?,?,?> scribe = new Agent<EnvironnementPhilo, NoStates, NoPerceptions, NoActions>(this) {
 
 		@Override
-		public String percevoir() {
-			return "Scribe: ";
-		}
-
-		@Override
-		public String decider() {
+		public String percevoirEtDecider() {
 			return "Pensée Produite : "+getPenseeProduite();
 		}
 
@@ -43,7 +39,7 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPe
 		}
 
 		@Override
-		protected Class<? extends ActionContainer> actionContainerClass() {
+		protected Class<? extends ActionEnum> actionContainerClass() {
 			return null;	//Pas d'actions
 		}
 
@@ -62,6 +58,10 @@ public class EnvironnementPhilo extends Environnement<PhiloAgentsEnum, DefaultPe
 		public NoStates etatInitial() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public void lireCourrier(List<Message> courrierReleve) {
 		}
 	};
 

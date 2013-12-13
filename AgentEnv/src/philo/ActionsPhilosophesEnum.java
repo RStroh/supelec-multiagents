@@ -1,15 +1,15 @@
 package philo;
 
 import plateforme.action.Action;
-import plateforme.action.ActionContainer;
+import plateforme.action.ActionEnum;
 import plateforme.action.WrongActionException;
 
-public enum ActionsPhilosophesEnum implements ActionContainer<Philosophe>{
+public enum ActionsPhilosophesEnum implements ActionEnum<Philosophe>{
 	MANGER(new Action<Philosophe, Void>(){
 
 		@Override
 		public Void doAction(Philosophe p) {
-			//Implémenter
+			//Implémenter si nécessaire
 			return null;
 		}
 

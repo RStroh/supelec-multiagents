@@ -2,13 +2,14 @@ package plateforme.interaction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import plateforme.agent.Agent;
 
 public class SimpleMailbox<A extends Agent> implements Mailbox<A>{
 
-	PriorityBlockingQueue<Message> messages = new PriorityBlockingQueue<Message>();
+	//BlockingQueue implementations are thread-safe.
+	private LinkedBlockingQueue<Message> messages = new LinkedBlockingQueue<Message>();
 	
 	@Override
 	public void deposer(Message m) throws SendMessageException {

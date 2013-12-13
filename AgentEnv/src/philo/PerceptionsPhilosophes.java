@@ -1,5 +1,4 @@
 package philo;
-package philo;
 
 import philo.Fourchette.EtatFourchette;
 import plateforme.perception.Perception;
